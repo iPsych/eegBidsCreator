@@ -1,22 +1,13 @@
-# eegBidsCreator
+# eegBidsCreator - customized version
 
-A script to convert embla files to the BIDS standard
-It creates the required folders: `sub-<participant_label>/[ses-<session_label>/]eeg`,
-which will contain acquisition information, and `source/sub-<participant_label>/[ses-<session_label>/]eeg`,
-where the original raw data will be copied.
+A script to convert embla files to EDF+ format.
+To prevent the EDF write error due to non-ASCII data, some strict restrictions are removed to EDF writing.
+Also, ole metadata reading is improved.
 
-It also creates `channels.tsv` file, containing the list of all channels.
-Information that I managed to retrieve are the name, units, type, description (if it is provided by embla),
-and sampling frequency. Remaining fields are filled with "n/a".
+## Usage (customized) 
+python3 eegBidsCreator.py <inpout data> -o <Output fiolders> --conversion EDF
 
-Extracted events are stored in `events.tsv` file with its onset time, duration, type,
-and corresponding sample (i.e. the number of data point of corresponding time, onset\*sampling) 
 
-I didn't found the task/acquisition/session id in the files, so they must be passed to script via options
-`-t, -a, -s`. Only task option is mandatory.
-
-If an additional option value `--conversion BV`,`EDF` or `MEEG` is provided, the source files
-will be converted into BrainVision/EDF+ format.
 
 ## Usage
 
