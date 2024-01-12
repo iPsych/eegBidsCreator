@@ -166,21 +166,21 @@ class EDF(object):
         f = open(self.__path+"/"+self.__prefix+"_events.edf", "wb")
         self.__writeUpperBlock(f, 1)
         f.seek(236, 0)
-        f.write("{:<8d}".format(1).encode("ascii"))
+        f.write("{:<8d}".format(1).encode("ascii", "replace"))
         f.seek(256)
-        f.write("{:<16s}".format("EDF Annotations").encode("ascii"))
-        f.write("{:<80s}".format(" ").encode("ascii"))
-        f.write("{:<8s}".format(" ").encode("ascii"))
-        f.write("{:<8d}".format(-32768).encode("ascii"))
-        f.write("{:<8d}".format(32767).encode("ascii"))
-        f.write("{:<8d}".format(-32768).encode("ascii"))
-        f.write("{:<8d}".format(32767).encode("ascii"))
-        f.write("{:<80s}".format(" ").encode("ascii"))
+        f.write("{:<16s}".format("EDF Annotations").encode("ascii", "replace"))
+        f.write("{:<80s}".format(" ").encode("ascii", "replace"))
+        f.write("{:<8s}".format(" ").encode("ascii", "replace"))
+        f.write("{:<8d}".format(-32768).encode("ascii", "replace"))
+        f.write("{:<8d}".format(32767).encode("ascii", "replace"))
+        f.write("{:<8d}".format(-32768).encode("ascii", "replace"))
+        f.write("{:<8d}".format(32767).encode("ascii", "replace"))
+        f.write("{:<80s}".format(" ").encode("ascii", "replace"))
 
         pos = f.tell()
         # Number of samples in record, to be calculated later
-        f.write("{:<8s}".format(" ").encode("ascii"))
-        f.write("{:<32s}".format(" ").encode("ascii"))
+        f.write("{:<8s}".format(" ").encode("ascii", "replace"))
+        f.write("{:<32s}".format(" ").encode("ascii", "replace"))
 
         # Start of events
         f.write("{:+f}".format(0).encode("utf_8")
@@ -212,70 +212,70 @@ class EDF(object):
         # [16] Label in format Type Emplacement
         for ch in self.Channels:
             self.__file.write("{:<16s}".format(ch.Label())
-                              .encode("ascii")[:16])
+                              .encode("ascii", "replace")[:16])
         if self.__EDFplus:
             self.__file.write("{:<16s}".format("EDF Annotations")
-                              .encode("ascii"))
+                              .encode("ascii", "replace"))
         # [80] Transducer type
         for ch in self.Channels:
             self.__file.write("{:<80s}".format(ch.GetTransducer())
-                              .encode("ascii")[:80])
+                              .encode("ascii", "replace")[:80])
         if self.__EDFplus:
-            self.__file.write("{:<80s}".format(" ").encode("ascii")[:80])
+            self.__file.write("{:<80s}".format(" ").encode("ascii", "replace")[:80])
         # [8]    Physical dimensions (i.e. units)
         for ch in self.Channels:
             self.__file.write("{:<8s}".format(ch.GetUnit())
-                              .encode("ascii")[:8])
+                              .encode("ascii", "replace")[:8])
         if self.__EDFplus:
-            self.__file.write("{:<8s}".format(" ").encode("ascii"))
+            self.__file.write("{:<8s}".format(" ").encode("ascii", "replace"))
         # [8]    Physical minimum
         for ch in self.Channels:
             self.__file.write("{:<8f}".format(ch.GetPhysMin())
-                              .encode("ascii")[:8])
+                              .encode("ascii", "replace")[:8])
         if self.__EDFplus:
-            self.__file.write("{:<8d}".format(-32768).encode("ascii"))
+            self.__file.write("{:<8d}".format(-32768).encode("ascii", "replace"))
         # [8]    Physical maximum
         for ch in self.Channels:
             self.__file.write("{:<8f}".format(ch.GetPhysMax())
-                              .encode("ascii")[:8])
+                              .encode("ascii", "replace")[:8])
         if self.__EDFplus:
-            self.__file.write("{:<8d}".format(32767).encode("ascii"))
+            self.__file.write("{:<8d}".format(32767).encode("ascii", "replace"))
         # [8]    Digital Minimum
         for ch in self.Channels:
             self.__file.write("{:<8d}".format(ch.GetDigMin())
-                              .encode("ascii"))
+                              .encode("ascii", "replace"))
         if self.__EDFplus:
-            self.__file.write("{:<8d}".format(-32768).encode("ascii"))
+            self.__file.write("{:<8d}".format(-32768).encode("ascii", "replace"))
         # [8]    Digital maximum
         for ch in self.Channels:
-            self.__file.write("{:<8d}".format(ch.GetDigMax()).encode("ascii"))
+            self.__file.write("{:<8d}".format(ch.GetDigMax()).encode("ascii", "replace"))
         if self.__EDFplus:
-            self.__file.write("{:<8d}".format(32767).encode("ascii"))
+            self.__file.write("{:<8d}".format(32767).encode("ascii", "replace"))
         # [80]   Prefiltering
         for ch in self.Channels:
             self.__file.write("{:<80s}".format(ch.GetFilter())
-                              .encode("ascii")[:80])
+                              .encode("ascii", "replace")[:80])
         if self.__EDFplus:
-            self.__file.write("{:<80s}".format(" ").encode("ascii"))
+            self.__file.write("{:<80s}".format(" ").encode("ascii", "replace"))
         # [8]    Number of samples per record: Recor duration*Frequency
         for ch in self.Channels:
             size = int(ch.GetFrequency()*self.RecordDuration)
-            self.__file.write("{:<8d}".format(size).encode("ascii")[:8])
+            self.__file.write("{:<8d}".format(size).encode("ascii", "replace")[:8])
         if self.__EDFplus:
-            self.__file.write("{:<8s}".format("8").encode("ascii"))
+            self.__file.write("{:<8s}".format("8").encode("ascii", "replace"))
         # [32]   Reserved
         for ch in self.Channels:
-            self.__file.write("{:<32s}".format(" ").encode("ascii")[:32])
+            self.__file.write("{:<32s}".format(" ").encode("ascii", "replace")[:32])
         if self.__EDFplus:
-            self.__file.write("{:<32s}".format(" ").encode("ascii"))
+            self.__file.write("{:<32s}".format(" ").encode("ascii", "replace"))
 
     def __writeUpperBlock(self, f, n_signal):
         # [0-7,8]        Version of data format, always '0'
-        f.write("{:<8d}".format(0).encode("ascii"))
+        f.write("{:<8d}".format(0).encode("ascii", "replace"))
         # [8-87, 80]     Local patient identification
-        f.write("{:<80s}".format(self.PatientId()).encode("ascii"))
+        f.write("{:<80s}".format(self.PatientId()).encode("ascii", "replace"))
         # [88-167, 80]   Local recording identification
-        f.write("{:<80s}".format(self.RecordId()).encode("ascii"))
+        f.write("{:<80s}".format(self.RecordId()).encode("ascii", "replace"))
         # [168-175,8]    Start date (reference time)
         if self.__aDate is not None:
             d = self.__aDate
@@ -283,23 +283,23 @@ class EDF(object):
             d = self.StartTime
         if d.year < 1985:
             d = d.replace(year=(d.year + 100))
-        f.write("{:<8s}".format(d.strftime("%d.%m.%y")).encode("ascii"))
+        f.write("{:<8s}".format(d.strftime("%d.%m.%y")).encode("ascii", "replace"))
         # [176-183,8]    Start time (as in metadata)
-        f.write("{:<8s}".format(d.strftime("%H.%M.%S")).encode("ascii"))
+        f.write("{:<8s}".format(d.strftime("%H.%M.%S")).encode("ascii", "replace"))
         # [184-191,8]    Number of bytes in header
-        f.write("{:<8d}".format(256+256*n_signal).encode("ascii"))
+        f.write("{:<8d}".format(256+256*n_signal).encode("ascii", "replace"))
         # [192-235,44]   EDF+ identifier
         # ('EDF+C' for continous, 'EDF+D' for discontinious)
         if self.__EDFplus:
-            f.write("{:<44s}".format("EDF+C").encode("ascii"))
+            f.write("{:<44s}".format("EDF+C").encode("ascii", "replace"))
         else:
-            f.write("{:<44s}".format(" ").encode("ascii"))
+            f.write("{:<44s}".format(" ").encode("ascii", "replace"))
         # [236-243,8]    Number of data records, -1 for unknown
-        f.write("{:<8d}".format(-1).encode("ascii"))
+        f.write("{:<8d}".format(-1).encode("ascii", "replace"))
         # [244-251,8]    Duration of data record
-        f.write("{:<8g}".format(self.RecordDuration).encode("ascii"))
+        f.write("{:<8g}".format(self.RecordDuration).encode("ascii", "replace"))
         # [252-255,4]    Number of signals (channels) in record
-        f.write("{:<4d}".format(n_signal).encode("ascii"))
+        f.write("{:<4d}".format(n_signal).encode("ascii", "replace"))
 
     def WriteDataBlock(self, data, start):
         if len(data) != len(self.Channels):
@@ -352,7 +352,7 @@ class EDF(object):
 
     def Close(self):
         self.__file.seek(236)
-        self.__file.write("{:<8d}".format(self.__records).encode("ascii"))
+        self.__file.write("{:<8d}".format(self.__records).encode("ascii", "replace"))
         self.__file.close()
         self.__file = None
 
